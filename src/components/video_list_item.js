@@ -1,7 +1,6 @@
 import React from 'react';
 
 const VideoListItem = ({video, onVideoSelect}) => {
-  console.log(onVideoSelect);
   const imageURL = video.snippet.thumbnails.medium.url;
 
   return (

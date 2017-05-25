@@ -117,149 +117,152 @@ It just pulls off component from react and assigns to component variable.
 Every class based component should have a render() method and a return statement.
 
 _Every input Element in HTML emits a change event by default._
-we can catch that like this:`render() {
+we can catch that like this:
+```js
+render() {
   return <input type="text" onChange = {this.onInputChange}/>
-  }`
+}
+```
 
-  Every event like this, defined by a browser, have an event object. Whenver we call an event handler, like a function that is called after the event is triggered. This event object is available inside that event handler.
+Every event like this, defined by a browser, have an event object. Whenver we call an event handler, like a function that is called after the event is triggered. This event object is available inside that event handler.
 
-  Example:
-  ```js
-  class SearchBar extends Component {
-    render() {
-      return <input type="text" onChange = {this.onInputChange}/>
-    }
-
-    onInputChange(event){
-      console.log(event.target.value);
-    }
+Example:
+```js
+class SearchBar extends Component {
+  render() {
+    return <input type="text" onChange = {this.onInputChange}/>
   }
 
-  export default SearchBar;
-  ```
-
-  ##### States
-  State is a JS object that is used to record and react to user events.
-  Functional components do NOT have state. Only Class based components do.
-
-  We only SET the state using `this.state = {term:''}`in constructor at the time of the initialization. Apart from that, we always manipulate our state using `this.setState({ term: event.target.value })`.
-
-  For example:
-  ```js
-  import React, {Component} from 'react';
-  class SearchBar extends Component {
-    constructor(props) {
-      super(props); //inherited from component class
-      this.state = {term: ''}; //initializing blank state
-    }
-    render() {
-      return (
-        <div>
-        <input onChange={event => this.setState({term: event.target.value})} />
-        Value of the input: {this.state.term}
-        </div>
-      );
-    }
+  onInputChange(event){
+    console.log(event.target.value);
   }
-  export default SearchBar;
-  ```
+}
 
-  ###### Controlled components
-  Here we use state to set the value of the input. It is suggested that we do it like this:
-  ```js
+export default SearchBar;
+```
+
+##### States
+State is a JS object that is used to record and react to user events.
+Functional components do NOT have state. Only Class based components do.
+
+We only SET the state using `this.state = {term:''}`in constructor at the time of the initialization. Apart from that, we always manipulate our state using `this.setState({ term: event.target.value })`.
+
+For example:
+```js
+import React, {Component} from 'react';
+class SearchBar extends Component {
+  constructor(props) {
+    super(props); //inherited from component class
+    this.state = {term: ''}; //initializing blank state
+  }
   render() {
     return (
       <div>
-      <input
-      value={this.state.term}
-      onChange={event => this.setState({term: event.target.value})} />
+      <input onChange={event => this.setState({term: event.target.value})} />
+      Value of the input: {this.state.term}
       </div>
     );
   }
-  ```
-  This also allows us to set the value of the input beforehand.
+}
+export default SearchBar;
+```
 
-  ##### Downward data flow
-  Downward data flow means only the most parent component is responsible for the data fetching.
+###### Controlled components
+Here we use state to set the value of the input. It is suggested that we do it like this:
+```js
+render() {
+  return (
+    <div>
+    <input
+    value={this.state.term}
+    onChange={event => this.setState({term: event.target.value})} />
+    </div>
+  );
+}
+```
+This also allows us to set the value of the input beforehand.
 
-  _In ES6, the key value syntax {key : value} can be changed to {key} if key and value have the same variable names._
+##### Downward data flow
+Downward data flow means only the most parent component is responsible for the data fetching.
 
-  ###### Passing data to the child component
-  We can pass the data down to the child component by simply passing them as arguments to the child component - Which then arrive in the child component in 'props' and can be accessed via accessing props.
-  For ex:
-  ```js
-  //ReduxSimpleStarter\src\index.js
-  //defined and set the state for the data fetched from YT.
-  class App extends Component{
-    constructor(props){
-      super(props);
+_In ES6, the key value syntax {key : value} can be changed to {key} if key and value have the same variable names._
 
-      this.state = {videos: [] };
+###### Passing data to the child component
+We can pass the data down to the child component by simply passing them as arguments to the child component - Which then arrive in the child component in 'props' and can be accessed via accessing props.
+For ex:
+```js
+//ReduxSimpleStarter\src\index.js
+//defined and set the state for the data fetched from YT.
+class App extends Component{
+  constructor(props){
+    super(props);
 
-      YTSearch({key: API_KEY, term: 'surf'}, function(videos){
-        this.setState({videos});
-      });
-    }
+    this.state = {videos: [] };
+
+    YTSearch({key: API_KEY, term: 'surf'}, function(videos){
+      this.setState({videos});
+    });
   }
-  ```
-  ```js
-  //ReduxSimpleStarter\src\components\video_list.js
+}
+```
+```js
+//ReduxSimpleStarter\src\components\video_list.js
 
-  const VideoList = (props) => {
-    return (
-      <ul className="col-md-4 list-group">
-      {props.videos}
-      </ul>
-    );
-  };
-  ```
+const VideoList = (props) => {
+  return (
+    <ul className="col-md-4 list-group">
+    {props.videos}
+    </ul>
+  );
+};
+```
 
 
-  ###### JS map function
-  ```js
-  var arr = [1,2,3];
-  arr.map(function(number) {return number * 2});
-  ```
+###### JS map function
+```js
+var arr = [1,2,3];
+arr.map(function(number) {return number * 2});
+```
 
-  using the same map function we render a list in the template.
+using the same map function we render a list in the template.
 
-  ```js
-  //ReduxSimpleStarter\src\components\video_list_item.js
-  const VideoListItem = (props) => {
-    return (
-      <li>VideoName</li>
-    );
-  }
-  export default VideoListItem;
-  ```
+```js
+//ReduxSimpleStarter\src\components\video_list_item.js
+const VideoListItem = (props) => {
+  return (
+    <li>VideoName</li>
+  );
+}
+export default VideoListItem;
+```
 
-  ```js
-  //ReduxSimpleStarter\src\components\video_list.js
-  const VideoList = (props) => {
+```js
+//ReduxSimpleStarter\src\components\video_list.js
+const VideoList = (props) => {
 
-    const VideoItems = props.videos.map((video) => {
-      return <VideoListItem key = {video.etag} video={video}/>
-    })
+  const VideoItems = props.videos.map((video) => {
+    return <VideoListItem key = {video.etag} video={video}/>
+  })
 
-    return (
-      <ul className="col-md-4 list-group">
-      {VideoItems}
-      </ul>
-    );
-  };
-  ```
+  return (
+    <ul className="col-md-4 list-group">
+    {VideoItems}
+    </ul>
+  );
+};
+```
 
-  In ES6,
-  ```js
-  const VideoListItem = (props) => {
-    const video = props.video;
-  }
-  ```
-  can be written as
-  ```js
-  const VideoListItem = ({video}) => {
-  };
-  ```
+In ES6,
+```js
+const VideoListItem = (props) => {
+  const video = props.video;
+}
+```
+can be written as
+```js
+const VideoListItem = ({video}) => {
+};
+```
 
 ###### Template Strings in ES6.
 The template strings are simply like this:
@@ -279,11 +282,11 @@ for ex:
 //index.js
 return (
   <div>
-    <SearchBar />
-    <VideoDetail video = {this.state.selectedVideo} />
-    <VideoList
-      onVideoSelect = {selectedVideo => this.setState({selectedVideo})}
-      videos = {this.state.videos} />
+  <SearchBar />
+  <VideoDetail video = {this.state.selectedVideo} />
+  <VideoList
+  onVideoSelect = {selectedVideo => this.setState({selectedVideo})}
+  videos = {this.state.videos} />
   </div>
 );
 ```
@@ -293,19 +296,70 @@ return (
 const VideoList = (props) => {
   const VideoItems = props.videos.map((video) => {
     return <VideoListItem
-      onVideoSelect = {props.onVideoSelect}
-      //getting that function in video_list and passing it to VideoListItem
-      key = {video.etag} video={video} />
+    onVideoSelect = {props.onVideoSelect}
+    //getting that function in video_list and passing it to VideoListItem
+    key = {video.etag} video={video} />
   })};
 ```
 
 ```js
-//ReduxSimpleStarter\src\components\video_list_item.js
-const VideoListItem = ({video, onVideoSelect}) => {
-  const imageURL = video.snippet.thumbnails.medium.url;
-  return (
-    <li onClick={()=>onVideoSelect(video)} className="list-group-item">
+  //ReduxSimpleStarter\src\components\video_list_item.js
+  const VideoListItem = ({video, onVideoSelect}) => {
+    const imageURL = video.snippet.thumbnails.medium.url;
+    return (
+      <li onClick={()=>onVideoSelect(video)} className="list-group-item">
       ...
-    </li>
-  );}
+      </li>
+    );}
 ```
+
+### Making the searchbar work.
+We start off by moving the YTSearch function under a function that will be called by the onChange event on the seachbar.
+
+Hence:
+
+```js
+//ReduxSimpleStarter\src\index.js
+
+getVideoList(term){
+  YTSearch({key: API_KEY, term: term}, (videos) => {
+    this.setState({
+      videos: videos,
+      selectedVideo: videos[1]
+    });
+  });
+}
+//YTSearch moved under getVideoList(term).
+```
+Then we pass this function as a callback to the searchbar element.
+```html
+<SearchBar onSearch = {term => this.getVideoList(term)}/>
+```
+
+Now in the searchbar element:
+```js
+//ReduxSimpleStarter\src\components\search_bar.js
+render() {
+  return (
+    <div>
+      <input
+      value={this.state.term}
+      onChange={event => this.searchFunction(event)} />
+    </div>
+  );
+};
+```
+we replace the logic for onChange by the function which is defined as:
+```js
+//ReduxSimpleStarter\src\components\search_bar.js
+searchFunction(event){
+  console.log("heppens");
+  this.setState({term: event.target.value});
+  this.props.onSearch(this.state.term);
+}
+```
+Here `this.props.onSearch(this.state.term);` calls the onSearch function passed as an attribute to the search component
+which in turn will call `getVideoList(term)` all the while passing it a search term.
+
+### Throttling the search
+To make the search better, we'll use a library called Lodash. Install it using Npm and include it at the top of the index.js file.
